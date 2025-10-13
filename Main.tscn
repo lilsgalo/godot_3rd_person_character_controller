@@ -1,12 +1,19 @@
-[gd_scene load_steps=10 format=3 uid="uid://cgc4dc6kiwsge"]
+[gd_scene load_steps=12 format=3 uid="uid://lnpyfg5a8b4r"]
 
 [ext_resource type="Script" uid="uid://dhhifv4w5ed3k" path="res://Main.gd" id="1_r0du0"]
-[ext_resource type="Script" uid="uid://cawwqnjn3boev" path="res://Player.gd" id="2_cm0pq"]
-[ext_resource type="Script" uid="uid://twfs6aeijxgv" path="res://PlayerCamera.gd" id="3_fos0i"]
+[ext_resource type="Script" uid="uid://cawwqnjn3boev" path="res://Player/Player.gd" id="2_r0du0"]
+[ext_resource type="Script" uid="uid://twfs6aeijxgv" path="res://Player/PlayerCamera.gd" id="3_fos0i"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lgr22"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_trn2v"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r0du0"]
+albedo_color = Color(0.40784314, 1, 1, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_cm0pq"]
+material = SubResource("StandardMaterial3D_r0du0")
+height = 0.5
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_r0du0"]
 radius = 0.07
@@ -31,7 +38,7 @@ shadow_enabled = true
 [node name="Player" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 collision_mask = 14
-script = ExtResource("2_cm0pq")
+script = ExtResource("2_r0du0")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
 shape = SubResource("CapsuleShape3D_lgr22")
@@ -41,6 +48,10 @@ shape = SubResource("CapsuleShape3D_lgr22")
 [node name="PlayerMesh" type="MeshInstance3D" parent="Player/MeshRoot"]
 mesh = SubResource("CapsuleMesh_trn2v")
 skeleton = NodePath("../..")
+
+[node name="Glasses" type="MeshInstance3D" parent="Player/MeshRoot/PlayerMesh"]
+transform = Transform3D(0.9445855, 0, 0, 0, 1.5787053, 0, 0, 0, 1, 0, 0.4939959, -0.019959807)
+mesh = SubResource("SphereMesh_cm0pq")
 
 [node name="CameraRoot" type="Node3D" parent="Player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1391876, 0)
