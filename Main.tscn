@@ -1,22 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://lnpyfg5a8b4r"]
+[gd_scene format=3 uid="uid://lnpyfg5a8b4r"]
 
 [ext_resource type="Script" uid="uid://dhhifv4w5ed3k" path="res://Main.gd" id="1_r0du0"]
-[ext_resource type="Script" uid="uid://cawwqnjn3boev" path="res://Player/Player.gd" id="2_r0du0"]
-[ext_resource type="Script" uid="uid://twfs6aeijxgv" path="res://Player/PlayerCamera.gd" id="3_fos0i"]
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lgr22"]
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_trn2v"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r0du0"]
-albedo_color = Color(0.40784314, 1, 1, 1)
-
-[sub_resource type="SphereMesh" id="SphereMesh_cm0pq"]
-material = SubResource("StandardMaterial3D_r0du0")
-height = 0.5
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_r0du0"]
-radius = 0.07
+[ext_resource type="PackedScene" uid="uid://c7mpchsvfm0r8" path="res://Player/Player.tscn" id="2_uu6xs"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3dxm6"]
 albedo_color = Color(0.7578125, 0.7578125, 0.7578125, 1)
@@ -28,54 +13,25 @@ size = Vector3(20, 0.2, 20)
 [sub_resource type="BoxMesh" id="BoxMesh_cm0pq"]
 size = Vector3(4, 2, 0.5)
 
-[node name="Main" type="Node3D"]
+[node name="Main" type="Node3D" unique_id=1635527177]
 script = ExtResource("1_r0du0")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=140931439]
 transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 7.990693, 0)
 shadow_enabled = true
 
-[node name="Player" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
-collision_mask = 14
-script = ExtResource("2_r0du0")
+[node name="Player" parent="." unique_id=821907494 instance=ExtResource("2_uu6xs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
-shape = SubResource("CapsuleShape3D_lgr22")
+[node name="Area" type="Node3D" parent="." unique_id=1542558787]
 
-[node name="MeshRoot" type="Node3D" parent="Player"]
-
-[node name="PlayerMesh" type="MeshInstance3D" parent="Player/MeshRoot"]
-mesh = SubResource("CapsuleMesh_trn2v")
-skeleton = NodePath("../..")
-
-[node name="Glasses" type="MeshInstance3D" parent="Player/MeshRoot/PlayerMesh"]
-transform = Transform3D(0.9445855, 0, 0, 0, 1.5787053, 0, 0, 0, 1, 0, 0.4939959, -0.019959807)
-mesh = SubResource("SphereMesh_cm0pq")
-
-[node name="CameraRoot" type="Node3D" parent="Player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1391876, 0)
-script = ExtResource("3_fos0i")
-
-[node name="CamH" type="Node3D" parent="Player/CameraRoot"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.33760476, 0)
-
-[node name="CamV" type="Node3D" parent="Player/CameraRoot/CamH"]
-
-[node name="CameraArm" type="SpringArm3D" parent="Player/CameraRoot/CamH/CamV"]
-shape = SubResource("SphereShape3D_r0du0")
-spring_length = 3.0
-
-[node name="Camera" type="Camera3D" parent="Player/CameraRoot/CamH/CamV/CameraArm"]
-
-[node name="Area" type="Node3D" parent="."]
-
-[node name="Ground" type="CSGMesh3D" parent="Area"]
+[node name="Ground" type="CSGMesh3D" parent="Area" unique_id=1643899743]
 use_collision = true
 collision_layer = 2
 mesh = SubResource("BoxMesh_7dm0k")
 
-[node name="Wall" type="CSGMesh3D" parent="Area"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.070091, -1.5171711)
+[node name="Wall" type="CSGMesh3D" parent="Area" unique_id=1822559874]
+transform = Transform3D(1, 0, 0, 0, 2.221802, 0, 0, 0, 1, 0, 2.2462835, -1.5171711)
 use_collision = true
+collision_layer = 4
 mesh = SubResource("BoxMesh_cm0pq")

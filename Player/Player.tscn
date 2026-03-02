@@ -1,0 +1,60 @@
+[gd_scene format=3 uid="uid://c7mpchsvfm0r8"]
+
+[ext_resource type="Script" uid="uid://cawwqnjn3boev" path="res://Player/Player.gd" id="1_tok1r"]
+[ext_resource type="Script" uid="uid://cj86v4pqjqqlu" path="res://Player/MovementController.gd" id="2_ddoul"]
+[ext_resource type="Script" uid="uid://twfs6aeijxgv" path="res://Player/PlayerCamera.gd" id="3_8g4oa"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lgr22"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_trn2v"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r0du0"]
+albedo_color = Color(0.40784314, 1, 1, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_cm0pq"]
+material = SubResource("StandardMaterial3D_r0du0")
+height = 0.5
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_r0du0"]
+radius = 0.07
+
+[node name="Player" type="CharacterBody3D" unique_id=821907494]
+collision_mask = 14
+script = ExtResource("1_tok1r")
+
+[node name="MovementController" type="Node" parent="." unique_id=326751597 node_paths=PackedStringArray("Player", "MeshRoot")]
+script = ExtResource("2_ddoul")
+Player = NodePath("..")
+MeshRoot = NodePath("../MeshRoot")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=15251619]
+shape = SubResource("CapsuleShape3D_lgr22")
+
+[node name="MeshRoot" type="Node3D" parent="." unique_id=1023084362]
+
+[node name="PlayerMesh" type="MeshInstance3D" parent="MeshRoot" unique_id=855179719]
+mesh = SubResource("CapsuleMesh_trn2v")
+skeleton = NodePath("../..")
+
+[node name="Glasses" type="MeshInstance3D" parent="MeshRoot/PlayerMesh" unique_id=1223592011]
+transform = Transform3D(0.9445855, 0, 0, 0, 1.5787053, 0, 0, 0, 1, 0, 0.4939959, -0.019959807)
+mesh = SubResource("SphereMesh_cm0pq")
+
+[node name="CameraRoot" type="Node3D" parent="." unique_id=1641256040]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("3_8g4oa")
+
+[node name="CamH" type="Node3D" parent="CameraRoot" unique_id=499330092]
+
+[node name="CamV" type="Node3D" parent="CameraRoot/CamH" unique_id=259139623]
+
+[node name="CameraArm" type="SpringArm3D" parent="CameraRoot/CamH/CamV" unique_id=1249993435]
+collision_mask = 6
+shape = SubResource("SphereShape3D_r0du0")
+spring_length = 3.0
+
+[node name="Camera" type="Camera3D" parent="CameraRoot/CamH/CamV/CameraArm" unique_id=1647283759]
+
+[connection signal="SetMovementDirection" from="." to="MovementController" method="_on_player_set_movement_direction"]
+[connection signal="SetMovementState" from="." to="MovementController" method="_on_player_set_movement_state"]
+[connection signal="SetCameraRotation" from="CameraRoot" to="MovementController" method="_on_camera_root_set_camera_rotation"]
